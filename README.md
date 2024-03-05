@@ -10,8 +10,14 @@ This servers communicates with a postgis database and allows to manage a collect
 go run ./cmd/server -listen-address :8080 -database-url ${POSTGRES_CONN_STRING}
 ```
 
+### Running the Unit Test Suite
+
+```bash
+make unit_test
+```
+
 ### Running the Integration Test Suite
 
 ```bash
-go test -v -count=1  ./app
+make integration_test
 ```
