@@ -6,8 +6,20 @@ This servers communicates with a postgis database and allows to manage a collect
 
 ### Running the Server
 
+Prerequsites:
+
+- go 1.22
+- docker
+
 ```bash
-go run ./cmd/server -listen-address :8080 -database-url ${POSTGRES_CONN_STRING}
+# Starts the DB.
+make dev_db
+
+# Starts the server.
+make dev
+
+# When you're done, stop the db.
+make stop_dev_db
 ```
 
 ### Running the Unit Test Suite
