@@ -23,6 +23,18 @@ func (f *CreateRequest) validate() []string {
 		validationIssues = append(validationIssues, "missing short code")
 	}
 
+	if len(f.ShortCode) > 4 {
+		validationIssues = append(validationIssues, "short code too long")
+	}
+
+	if f.Latitude < -90 || f.Latitude > 90 {
+		validationIssues = append(validationIssues, "latitude must be >= -90 and <= 90")
+	}
+
+	if f.Longitude < -90 || f.Longitude > 90 {
+		validationIssues = append(validationIssues, "longitude must be >= -90 and <= 90")
+	}
+
 	if f.BatteryLevel < 0 || f.BatteryLevel > 100 {
 		validationIssues = append(validationIssues, "battery level must be > 0 and <= 100")
 	}

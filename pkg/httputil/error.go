@@ -7,9 +7,9 @@ import (
 )
 
 type APIError struct {
-	Code    int64  `json:"code"`
-	Message string `json:"message"`
-	Details any    `json:"details,omitempty"`
+	Code    ErrCode `json:"code"`
+	Message string  `json:"message"`
+	Details any     `json:"details,omitempty"`
 }
 
 func (e *APIError) Error() string {

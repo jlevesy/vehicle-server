@@ -32,7 +32,7 @@ func New(ctx context.Context, cfg Config, logger *zap.Logger) (*App, error) {
 	)
 
 	// Initializing the storage layer.
-	store, err := storage.NewPGXStore(ctx, cfg.DatabaseURL)
+	store, err := storage.NewPGXStore(ctx, cfg.DatabaseURL, logger)
 	if err != nil {
 		logger.Error(
 			"Could not create the storage",

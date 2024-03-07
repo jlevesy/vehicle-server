@@ -1,3 +1,5 @@
+//go:build integration
+
 package app_test
 
 import (
@@ -5,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/cicd-lectures/vehicle-server/pkg/httputil"
+	"github.com/cicd-lectures/vehicle-server/pkg/testutil"
 	"github.com/cicd-lectures/vehicle-server/storage/vehiclestore"
 	"github.com/cicd-lectures/vehicle-server/vehicle"
 	"github.com/stretchr/testify/assert"
@@ -29,7 +32,7 @@ func TestApp_CreatesVehicles(t *testing.T) {
 	resp, err := http.Post(
 		"http://"+app.ListenAddress()+"/vehicles",
 		"application/json",
-		encodeJSON(t, &newVehicle),
+		testutil.EncodeJSON(t, &newVehicle),
 	)
 	require.NoError(t, err)
 	require.Equal(t, http.StatusCreated, resp.StatusCode)

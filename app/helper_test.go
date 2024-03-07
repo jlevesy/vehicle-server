@@ -1,10 +1,7 @@
 package app_test
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
-	"io"
 	"net/http"
 	"path"
 	"testing"
@@ -132,15 +129,4 @@ func seedVehicles(t *testing.T, store vehiclestore.Store, vehicles ...vehiclesto
 		_, err := store.Create(ctx, v)
 		require.NoError(t, err)
 	}
-}
-
-func encodeJSON(t *testing.T, v any) io.Reader {
-	t.Helper()
-
-	var buf bytes.Buffer
-
-	err := json.NewEncoder(&buf).Encode(v)
-	require.NoError(t, err)
-
-	return &buf
 }
