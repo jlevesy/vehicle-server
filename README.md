@@ -33,3 +33,23 @@ make unit_test
 ```bash
 make integration_test
 ```
+
+### API examples.
+
+#### Create a Vehicle
+
+```bash
+curl --header "Content-Type: application/json" --data '{"latitude": 3.32,"longitude": 4.323, "shortcode":"abed", "battery": 10}' localhost:8080/vehicles | jq .
+```
+
+#### Find Nearest Vehicles
+
+```bash
+curl localhost:8080/vehicles\?latitude=34.2\&longitude=23.4\&limit=10
+```
+
+#### Delete a Vehicle
+
+```bash
+curl --request delete localhost:8080/vehicles/${VEHICLE_ID}
+```
