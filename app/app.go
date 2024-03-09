@@ -62,6 +62,7 @@ func New(ctx context.Context, cfg Config, logger *zap.Logger) (*App, error) {
 	// Wire the routes.
 	router.Handle("GET /vehicles", vehicle.NewListHandler(store, logger))
 	router.Handle("POST /vehicles", vehicle.NewCreateHandler(store, logger))
+	router.Handle("DELETE /vehicles/{id}", vehicle.NewDeleteHandler(store, logger))
 	router.HandleFunc("GET /_/ready", func(rw http.ResponseWriter, r *http.Request) {
 		rw.WriteHeader(http.StatusOK)
 	})

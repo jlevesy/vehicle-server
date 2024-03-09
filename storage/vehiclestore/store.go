@@ -20,4 +20,8 @@ type Store interface {
 
 	// Finds the N closests vehicles from the current position.
 	FindClosestFrom(context.Context, Point, int64) ([]Vehicle, error)
+
+	// Delete a vehicle by its ID.
+	// It returns true if the vehicle was deleted, false if the id did not exist.
+	Delete(context.Context, int64) (bool, error)
 }

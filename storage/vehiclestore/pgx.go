@@ -103,3 +103,16 @@ func (p *PGXStore) FindClosestFrom(ctx context.Context, location Point, limit in
 
 	return vehicles, rows.Err()
 }
+
+const deleteByIDStatement = `
+DELETE FROM vehicle_server.vehicles WHERE id = $1
+`
+
+func (p *PGXStore) Delete(ctx context.Context, id int64) (bool, error) {
+	tag, err := p.conn.Exec(ctx, deleteByIDStatement, id)
+	if err != nil {
+		return false, err
+	}
+
+	return tag.RowsAffected() == 1, nil
+}
