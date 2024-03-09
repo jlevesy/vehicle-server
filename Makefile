@@ -1,3 +1,15 @@
+DIST_DIR=./dist
+
+build: dist
+	go build -o $(DIST_DIR)/server ./cmd/server
+
+.PHONY: clean
+clean:
+	rm -rf $(DIST_DIR)
+
+dist:
+	mkdir -p $(DIST_DIR)
+
 .PHONY: unit_test
 unit_test:
 	go test -count=1 -v ./...
