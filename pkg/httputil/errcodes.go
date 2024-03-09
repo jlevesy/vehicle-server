@@ -11,4 +11,5 @@ const (
 
 	// [1000 - 1999]: application level errors
 	ErrCodeInvalidRequestPayload = iota + 1000
+	ErrCodeResourceNotFound
 )

@@ -3,6 +3,7 @@
 package app_test
 
 import (
+	"context"
 	"net/http"
 	"testing"
 
@@ -99,4 +100,76 @@ func TestApp_ListsClosestVehicles(t *testing.T) {
 	err = httputil.DecodeJSON(resp.Body, &gotResponse)
 	require.NoError(t, err)
 	assert.Equal(t, wantResponse, gotResponse)
+}
+
+func TestApp_DeletesVehicleByID(t *testing.T) {
+	// Setup the testenvironment, and clean it up as soon as the test finishes.
+	app, teardown := setupEnvironment(t)
+	t.Cleanup(teardown)
+
+	// Add some vehicles to the database.
+	seedVehicles(
+		t,
+		app.Store().Vehicle(),
+		vehicleSeed...,
+	)
+
+	// Make a request for a vehicle that does not exists.
+	// We should get a 404.
+	resp, err := httpDelete(
+		"http://" + app.ListenAddress() + "/vehicles/456",
+	)
+	require.NoError(t, err)
+	require.Equal(t, http.StatusNotFound, resp.StatusCode)
+
+	// Make a request for a vehicle that does exist.
+	// We should get a  204.
+	resp, err = httpDelete(
+		"http://" + app.ListenAddress() + "/vehicles/1",
+	)
+	require.NoError(t, err)
+	require.Equal(t, http.StatusNoContent, resp.StatusCode)
+
+	// List all vehicles, we should have only two.
+	vehicles, err := app.Store().Vehicle().FindClosestFrom(
+		context.Background(),
+		vehiclestore.Point{
+			Longitude: 10.0,
+			Latitude:  10.0,
+		},
+		10,
+	)
+	require.NoError(t, err)
+	assert.Equal(t,
+		[]vehiclestore.Vehicle{
+			{
+				ID:        2,
+				ShortCode: "bbb",
+				Position: vehiclestore.Point{
+					Latitude:  51,
+					Longitude: 51,
+				},
+				BatteryLevel: 50,
+			},
+			{
+				ID:        3,
+				ShortCode: "ccc",
+				Position: vehiclestore.Point{
+					Latitude:  52,
+					Longitude: 52,
+				},
+				BatteryLevel: 60,
+			},
+		},
+		vehicles,
+	)
+}
+
+func httpDelete(url string) (*http.Response, error) {
+	req, err := http.NewRequest(http.MethodDelete, url, http.NoBody)
+	if err != nil {
+		return nil, err
+	}
+
+	return http.DefaultClient.Do(req)
 }
