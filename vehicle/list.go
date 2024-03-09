@@ -16,7 +16,7 @@ type ListRequest struct {
 	Limit     int64
 }
 
-func newListRequestFromQuery(r *http.Request) *ListRequest {
+func newListRequestFromQueryParameters(r *http.Request) *ListRequest {
 	var req ListRequest
 
 	req.Latitude, _ = strconv.ParseFloat(r.URL.Query().Get("latitude"), 64)
@@ -53,7 +53,7 @@ func NewListHandler(store storage.Store, logger *zap.Logger) *ListHandler {
 }
 
 func (l *ListHandler) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
-	req := newListRequestFromQuery(r)
+	req := newListRequestFromQueryParameters(r)
 
 	vehicles, err := l.store.Vehicle().FindClosestFrom(
 		r.Context(),
