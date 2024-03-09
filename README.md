@@ -1,54 +1,24 @@
-# Vehicle Server
+# Lancer la base de donnés:
 
-This servers communicates with a postgis database and allows to manage a collection of vehicles and find the closest one from a given position.
+docker container run --detach --rm --name=vehicle-server-dev --env=POSTGRES_PASSWORD=secret --env=POSTGRES_USER=vehicle-server --env=POSTGRES_DB=vehicle-server --publish 5432:5432 postgis/postgis:16-3.4-alpine
 
-## How to use
+# Lancer le vehicle-server:
 
-### Running the Server
+./server -listen-address=:8080 -database-url=postgres://vehicle-server:secret@localhost:5432/vehicle-server
 
-Prerequsites:
-
-- go 1.22
-- docker
-
-```bash
-# Starts the DB.
-make dev_db
-
-# Starts the server.
-make dev
-
-# When you're done, stop the db.
-make stop_dev_db
-```
-
-### Running the Unit Test Suite
-
-```bash
-make unit_test
-```
-
-### Running the Integration Test Suite
-
-```bash
-make integration_test
-```
-
-### API examples.
-
-#### Create a Vehicle
+# Créer un véhicule
 
 ```bash
 curl --header "Content-Type: application/json" --data '{"latitude": 3.32,"longitude": 4.323, "shortcode":"abed", "battery": 10}' localhost:8080/vehicles | jq .
 ```
 
-#### Find Nearest Vehicles
+# Trouver les véhicules les plus proche
 
 ```bash
 curl localhost:8080/vehicles\?latitude=34.2\&longitude=23.4\&limit=10
 ```
 
-#### Delete a Vehicle
+# Supprimer un vehicle
 
 ```bash
 curl --request delete localhost:8080/vehicles/${VEHICLE_ID}
