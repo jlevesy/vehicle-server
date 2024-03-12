@@ -1,4 +1,4 @@
-module github.com/cicd-lectures/vehicle-server
+module github.com/jlevesy/vehicle-server
 
 go 1.22.0
 
