@@ -1,3 +1,15 @@
+.PHONY: clean
+clean:
+	rm -rf dist
+
+.PHONY: dist
+dist:
+	mkdir -p dist
+
+.PHONY: build
+build:
+	go build -o dist/server ./cmd/server
+
 DB_CONTAINER_NAME=vehicle-server-dev
 POSTGRES_USER=vehicle-server
 POSTGRES_PASSWORD=secret
